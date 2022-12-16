@@ -26,7 +26,7 @@ def render(
     return HttpResponse(content, content_type, status)
 
 
-def redirect(to, permanent=False, status = None, *args, **kwargs):
+def redirect(to, permanent=False, status=None, *args, **kwargs):
     """
     Return an HttpResponseRedirect to the appropriate URL for the arguments
     passed.
@@ -47,9 +47,13 @@ def redirect(to, permanent=False, status = None, *args, **kwargs):
     """
     if status:
         if status >= 300 and status < 400:
-            return HttpResponseCustomRedirect(resolve_url(to, *args, **kwargs), status_code = status)
+            return HttpResponseCustomRedirect(
+                resolve_url(to, *args, **kwargs), status_code=status
+            )
         else:
-            raise ValueError("Redirect HTTP status code should be in the range [300, 400) ")
+            raise ValueError(
+                "Redirect HTTP status code should be in the range [300, 400) "
+            )
 
     redirect_class = (
         HttpResponsePermanentRedirect if permanent else HttpResponseRedirect
