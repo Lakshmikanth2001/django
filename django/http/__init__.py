@@ -20,6 +20,7 @@ from django.http.response import (
     HttpResponseNotModified,
     HttpResponsePermanentRedirect,
     HttpResponseRedirect,
+    HttpResponseCustomRedirect,
     HttpResponseServerError,
     JsonResponse,
     StreamingHttpResponse,
