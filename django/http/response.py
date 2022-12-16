@@ -608,6 +608,10 @@ class HttpResponseRedirect(HttpResponseRedirectBase):
 class HttpResponsePermanentRedirect(HttpResponseRedirectBase):
     status_code = 301
 
+class HttpResponseCustomRedirect(HttpResponseRedirectBase):
+    def __init__(self, redirect_to, status_code, *args, **kwargs):
+        self.status_code = status_code
+        super().__init__(redirect_to, *args, **kwargs)
 
 class HttpResponseNotModified(HttpResponse):
     status_code = 304

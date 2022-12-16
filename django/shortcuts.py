@@ -6,6 +6,7 @@ for convenience's sake.
 from django.http import (
     Http404,
     HttpResponse,
+    HttpResponseCustomRedirect,
     HttpResponsePermanentRedirect,
     HttpResponseRedirect,
 )
@@ -25,7 +26,7 @@ def render(
     return HttpResponse(content, content_type, status)
 
 
-def redirect(to, *args, permanent=False, **kwargs):
+def redirect(to, permanent=False, status = None, *args, **kwargs):
     """
     Return an HttpResponseRedirect to the appropriate URL for the arguments
     passed.
@@ -41,7 +42,15 @@ def redirect(to, *args, permanent=False, **kwargs):
 
     Issues a temporary redirect by default; pass permanent=True to issue a
     permanent redirect.
+
+    Redirect with valid status code which is use full for HTTP Methods like PATCH, PUT
     """
+    if status:
+        if status >= 300 and status < 400:
+            return HttpResponseCustomRedirect(resolve_url(to, *args, **kwargs), status_code = status)
+        else:
+            raise ValueError("Redirect HTTP status code should be in the range [300, 400) ")
+
     redirect_class = (
         HttpResponsePermanentRedirect if permanent else HttpResponseRedirect
     )
